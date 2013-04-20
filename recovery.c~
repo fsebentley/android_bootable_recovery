@@ -226,20 +226,16 @@ get_args(int *argc, char ***argv) {
         strlcat(boot.recovery, (*argv)[i], sizeof(boot.recovery));
         strlcat(boot.recovery, "\n", sizeof(boot.recovery));
     }
-    if (device_flash_type() == MTD) {
-	set_bootloader_message(&boot);
-    }
+    set_bootloader_message(&boot);
 }
 
 void
 set_sdcard_update_bootloader_message() {
-    if (device_flash_type() == MTD) {
     struct bootloader_message boot;
     memset(&boot, 0, sizeof(boot));
     strlcpy(boot.command, "boot-recovery", sizeof(boot.command));
     strlcpy(boot.recovery, "recovery\n", sizeof(boot.recovery));
     set_bootloader_message(&boot);
-    }
 }
 
 // How much of the temp log we have copied to the copy in cache.
@@ -674,7 +670,7 @@ wipe_data(int confirm) {
         erase_volume("/datadata");
     }
     erase_volume("/sd-ext");
-    erase_volume("/emmc/.android_secure");
+    erase_volume("/sdcard/.android_secure");
     ui_print("Data wipe complete.\n");
 }
 
